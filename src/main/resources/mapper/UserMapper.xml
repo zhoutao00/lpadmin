@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.lpadmin.mapper.UserMapper">
+
+    <resultMap id="UserMap" type="com.example.lpadmin.entity.User" autoMapping="true"></resultMap>
+    
+    <select id="selectPage" resultMap="UserMap">
+        select username, role , status , create_time , update_time
+        from lp_user
+        <where>
+            <if test="username != null and username != '' ">
+                and username like CONCAT('%',#{username},'%')
+            </if>
+            and status = 0
+        </where>
+        order by id desc
+    </select>
+
+</mapper>
