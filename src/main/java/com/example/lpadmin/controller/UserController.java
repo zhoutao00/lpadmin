@@ -22,6 +22,11 @@ public class UserController {
     @Resource
     private UserService userService;
 
+    /**
+     * 添加用户接口
+     * @param user
+     * @return
+     */
     @PostMapping
     public ReturnResult save(@RequestBody User user){
         DateTime dateTime = new DateTime();
@@ -31,6 +36,11 @@ public class UserController {
         return new ReturnResult(isSave ? Code.SAVE_OK : Code.SAVE_ERR,isSave,isSave ? "添加成功" : "添加失败");
     }
 
+    /**
+     * 根据ID删除用户接口
+     * @param id
+     * @return
+     */
     @DeleteMapping("/{id}")
     public ReturnResult delete(@PathVariable String id){
         boolean remove = userService.removeById(id);
@@ -41,6 +51,11 @@ public class UserController {
         }
     }
 
+    /**
+     * 修改用户接口
+     * @param user
+     * @return
+     */
     @PutMapping
     public ReturnResult update(@RequestBody User user){
         DateTime dateTime = new DateTime();
@@ -51,6 +66,10 @@ public class UserController {
         return new ReturnResult(update ? Code.UPDATE_OK:Code.UPDATE_ERR,update,update ? "修改成功" : "修改失败");
     }
 
+    /**
+     * 查询所有用户
+     * @return
+     */
     @GetMapping
     public ReturnResult findAll(){
         List<User> userList = userService.list();
@@ -59,6 +78,11 @@ public class UserController {
         return new ReturnResult(code, userList , msg);
     }
 
+    /**
+     * 通过username查询单个用户
+     * @param username
+     * @return
+     */
     @GetMapping("/{username}")
     public ReturnResult findByName(@PathVariable String username){
         QueryWrapper wrapper = new QueryWrapper<>();
@@ -69,7 +93,13 @@ public class UserController {
         return new ReturnResult(code,user,msg);
     }
 
-    //条件分页查询
+    /**
+     * 条件分页查询
+     * @param page
+     * @param limit
+     * @param username
+     * @return
+     */
     @GetMapping("/page")
     public ReturnResult findByPage(@RequestParam Long page, @RequestParam Long limit, @RequestParam(required = false,defaultValue = "") String username){
         //创建page对象
@@ -79,6 +109,17 @@ public class UserController {
         Integer code = pageModel != null ? Code.FIND_OK : Code.FIND_ERR;
         String msg =  pageModel != null ? "查询成功" : "查询失败";
         return new ReturnResult(code,pageModel,msg);
+    }
+
+    /**
+     * 批量删除
+     * @param ids
+     * @return
+     */
+    @DeleteMapping("batchDelete")
+    public ReturnResult batchDelete(@RequestBody List<String> ids){
+        boolean removeByIds = userService.removeByIds(ids);
+        return new ReturnResult(removeByIds ? Code.DELETE_OK : Code.DELETE_ERR,removeByIds,removeByIds ? "批量删除成功" : "批量删除失败");
     }
 
 }
