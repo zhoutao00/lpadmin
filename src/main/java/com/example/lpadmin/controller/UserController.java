@@ -10,11 +10,15 @@ import com.example.lpadmin.service.UserService;
 import com.example.lpadmin.util.Code;
 import com.example.lpadmin.util.DateTime;
 import com.example.lpadmin.util.ReturnResult;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
 
+
+@Api(tags = "用户管理接口")
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -27,6 +31,7 @@ public class UserController {
      * @param user
      * @return
      */
+    @ApiOperation("新增用户接口")
     @PostMapping
     public ReturnResult save(@RequestBody User user){
         DateTime dateTime = new DateTime();
@@ -41,6 +46,7 @@ public class UserController {
      * @param id
      * @return
      */
+    @ApiOperation("删除用户接口")
     @DeleteMapping("/{id}")
     public ReturnResult delete(@PathVariable String id){
         boolean remove = userService.removeById(id);
@@ -56,6 +62,7 @@ public class UserController {
      * @param user
      * @return
      */
+    @ApiOperation("修改用户接口")
     @PutMapping
     public ReturnResult update(@RequestBody User user){
         DateTime dateTime = new DateTime();
@@ -70,6 +77,7 @@ public class UserController {
      * 查询所有用户
      * @return
      */
+    @ApiOperation("查询所有用户接口")
     @GetMapping
     public ReturnResult findAll(){
         List<User> userList = userService.list();
@@ -83,6 +91,7 @@ public class UserController {
      * @param username
      * @return
      */
+    @ApiOperation("通过username查询单个用户接口")
     @GetMapping("/{username}")
     public ReturnResult findByName(@PathVariable String username){
         QueryWrapper wrapper = new QueryWrapper<>();
@@ -100,8 +109,10 @@ public class UserController {
      * @param username
      * @return
      */
-    @GetMapping("/page")
-    public ReturnResult findByPage(@RequestParam Long page, @RequestParam Long limit, @RequestParam(required = false,defaultValue = "") String username){
+    @ApiOperation("条件分页查询")
+    @GetMapping("{page}/{limit}")
+    //@RequestParam(required = false,defaultValue = "")
+    public ReturnResult findByPage(@PathVariable Long page, @PathVariable Long limit, String username){
         //创建page对象
         Page<User> userPage = new Page<>(page,limit);
         //调用service方法
@@ -116,6 +127,7 @@ public class UserController {
      * @param ids
      * @return
      */
+    @ApiOperation("批量删除")
     @DeleteMapping("batchDelete")
     public ReturnResult batchDelete(@RequestBody List<String> ids){
         boolean removeByIds = userService.removeByIds(ids);

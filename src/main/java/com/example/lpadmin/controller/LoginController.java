@@ -1,16 +1,21 @@
 package com.example.lpadmin.controller;
 
 import com.example.lpadmin.util.ReturnResult;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
+
+@Api(tags = "登录接口")
 @RestController
 @RequestMapping("/index")
 public class LoginController {
 
 
+    @ApiOperation("用户登录接口（未完成）")
     @PostMapping("login")
     public ReturnResult login(){
         Map<String,Object> map = new HashMap<>();
@@ -27,6 +32,7 @@ public class LoginController {
     //          "name":"Super Admin"
     //      }
     // }
+    @ApiOperation("获取用户信息接口（未完成）")
     @GetMapping("info")
     public ReturnResult info(){
         Map<String,Object> map = new HashMap<>();
@@ -37,6 +43,8 @@ public class LoginController {
         return new ReturnResult(20000,map);
     }
 
+
+    @ApiOperation("退出登录接口")
     @PostMapping("logout")
     public ReturnResult logout(){
         return new ReturnResult(20000,"退出成功");

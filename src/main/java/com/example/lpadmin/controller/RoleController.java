@@ -6,11 +6,14 @@ import com.example.lpadmin.service.RoleService;
 import com.example.lpadmin.util.Code;
 import com.example.lpadmin.util.DateTime;
 import com.example.lpadmin.util.ReturnResult;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
 
+@Api(tags = "角色管理")
 @RestController
 @RequestMapping("/role")
 public class RoleController {
@@ -18,6 +21,7 @@ public class RoleController {
     @Resource
     private RoleService roleService;
 
+    @ApiOperation("查询所有角色信息接口")
     @GetMapping
     public ReturnResult findAll(){
         List<Role> list = roleService.list();
@@ -26,6 +30,8 @@ public class RoleController {
         return new ReturnResult(code,list,msg);
     }
 
+
+    @ApiOperation("查询单个角色信息接口")
     @GetMapping("/{id}")
     public ReturnResult findById(@PathVariable String id){
         QueryWrapper wrapper = new QueryWrapper<>();
@@ -36,12 +42,15 @@ public class RoleController {
         return new ReturnResult(code,one,msg);
     }
 
+    @ApiOperation("删除角色信息接口")
     @DeleteMapping("/{id}")
     public ReturnResult deleteById(@PathVariable String id){
         boolean byId = roleService.removeById(id);
         return new ReturnResult(byId ? Code.DELETE_OK : Code.DELETE_ERR,byId,byId ? "删除成功" : "删除失败");
     }
 
+
+    @ApiOperation("新增角色信息接口")
     @PostMapping
     public ReturnResult save(@RequestBody Role role){
         DateTime dateTime = new DateTime();
